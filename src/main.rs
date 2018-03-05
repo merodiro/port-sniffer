@@ -49,10 +49,9 @@ impl Arguments {
     }
 }
 
-fn scan(tx: Sender<u16>, start_port: u16, addr: IpAddr, num_threads: u16, txc: Sender<u16>) {
+fn scan(tx: Sender<u16>, start_port: u16, addr: IpAddr, num_threads: u16) {
     let mut port: u16 = start_port + 1;
     loop {
-        txc.send(1).unwrap();
         match TcpStream::connect((addr, port)) {
            Ok(_) => {
                print!("✓ {} ", port);
@@ -88,15 +87,11 @@ fn main() {
     let num_threads = arguments.threads;
     let addr = arguments.ipaddr;
     let (tx, rx) = channel();
-    let mut n = 0;
-    let (txc, rxc) = channel();
     for i in 0..num_threads {
         let tx = tx.clone();
 
-        let txc = txc.clone();
-
         thread::spawn(move || {
-            scan(tx, i, addr, num_threads, txc);
+            scan(tx, i, addr, num_threads);
         });
     }
 
@@ -104,11 +99,6 @@ fn main() {
 
     drop(tx);
     drop(txc);
-
-    for p in rxc {
-        n += p;
-        println!("{:.2}", ((n as f32) / (MAX_PORT as f32)));
-    }
 
     for p in rx {
         out.push(p);
