@@ -6,3 +6,6 @@ description= "a port sniffer to detect open ports"
 license = "MIT"
 
 [dependencies]
+
+[build-dependencies]
+cc = { git = "https://github.com/alexcrichton/cc-rs" }
