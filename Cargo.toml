@@ -2,5 +2,7 @@
 name = "port_sniffer"
 version = "0.1.0"
 authors = ["Amr A.Mohammed <merodiro@gmail.com>"]
+description= "a port sniffer to detect open ports"
+license = "MIT"
 
 [dependencies]
