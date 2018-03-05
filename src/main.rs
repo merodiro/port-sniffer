@@ -98,7 +98,6 @@ fn main() {
     let mut out = vec![];
 
     drop(tx);
-    drop(txc);
 
     for p in rx {
         out.push(p);
